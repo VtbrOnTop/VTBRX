@@ -1199,7 +1199,6 @@ statsFolder:AddButton("Copiar EstadÃƒÆ’Ã‚Â­sticas", function()
     statsText = statsText .. "Kills: " .. formatNumberWithCommas(player.leaderstats.Kills.Value) .. "\n"
     statsText = statsText .. "Brawls: " .. formatNumberWithCommas(player.leaderstats.Brawls.Value) .. "\n\n"
     
-    -- Agregar estadÃƒÆ’Ã‚Â­sticas de sesiÃƒÆ’Ã‚Â³n si el seguimiento ha comenzado
     if hasStartedTracking then
         local elapsedTime = os.time() - sessionStartTime
         local strengthGain = player.leaderstats.Strength.Value - sessionStartStrength
@@ -1225,8 +1224,8 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 pets:AddLabel("Pets")
 
-local selectedPet = "Neon Guardian" -- Default selection
-local petDropdown = pets:AddDropdown("Seleccionar Mascota", function(text)
+local selectedPet = "Neon Guardian"
+local petDropdown = pets:AddDropdown("Selecionar Mascota", function(text)
     selectedPet = text
     print("Mascota seleccionada: " .. text)
 end)

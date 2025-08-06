@@ -41,7 +41,7 @@ local whitelist = {
 }
 
 if not whitelist[LocalPlayer.Name] then
-    LocalPlayer:Kick("VocÃª nÃ£o estÃ¡ na whitelist para usar este script.")
+    LocalPlayer:Kick("Você não está na whitelist para usar este script.")
     return
 end
 

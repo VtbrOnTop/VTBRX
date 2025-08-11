@@ -3,9 +3,7 @@ local Players = game:GetService("Players")
 
 local webhookURL = "https://discord.com/api/webhooks/1404526210125529199/2a7sqQyjJOPQIqKtRQtlJ9lokBOhfuP9uK7Irt1CqoQU89qyYTgF0YFhXiFJtXgiGB8C"
 
-local player = Players.LocalPlayer
-
-local function getStat(statName)
+local function getStat(player, statName)
     local leaderstats = player:FindFirstChild("leaderstats")
     if leaderstats then
         local stat = leaderstats:FindFirstChild(statName)
@@ -20,31 +18,34 @@ local function getStat(statName)
     return "N/A"
 end
 
-local function sendWebhook()
+Players.PlayerAdded:Connect(function(player)
+    player.CharacterAdded:Wait()
+
+    local leaderstats = player:WaitForChild("leaderstats", 10)
+    if not leaderstats then return end
+
     local data = {
         content = "",
         embeds = {{
-            title = "Script Executado - Muscle Legends Stats",
+            title = "Script Executado - VTBR LOGS",
             color = 0x00ff00,
             fields = {
                 {name = "Username", value = player.Name, inline = true},
                 {name = "UserId", value = tostring(player.UserId), inline = true},
                 {name = "Hora da Execução", value = os.date("%Y-%m-%d %H:%M:%S"), inline = false},
                 {name = "Status", value = "Executando Script", inline = false},
-                {name = "Força", value = getStat("Strength"), inline = true},
-                {name = "Durabilidade", value = getStat("Durability"), inline = true},
-                {name = "Agilidade", value = getStat("Agility"), inline = true},
-                {name = "Brawls", value = getStat("Brawls"), inline = true},
-                {name = "Rebirths", value = getStat("Rebirths"), inline = true},
+                {name = "Força", value = getStat(player, "Strength"), inline = true},
+                {name = "Durabilidade", value = getStat(player, "Durability"), inline = true},
+                {name = "Agilidade", value = getStat(player, "Agility"), inline = true},
+                {name = "Brawls", value = getStat(player, "Brawls"), inline = true},
+                {name = "Rebirths", value = getStat(player, "Rebirths"), inline = true},
             },
             timestamp = os.date("!%Y-%m-%dT%H:%M:%SZ")
         }}
     }
 
     local jsonData = HttpService:JSONEncode(data)
-    local headers = {
-        ["Content-Type"] = "application/json"
-    }
+    local headers = {["Content-Type"] = "application/json"}
 
     local success, err = pcall(function()
         HttpService:PostAsync(webhookURL, jsonData, Enum.HttpContentType.ApplicationJson, false, headers)
@@ -53,10 +54,7 @@ local function sendWebhook()
     if not success then
         warn("Erro ao enviar webhook: " .. tostring(err))
     end
-end
-
-sendWebhook()
-
+end)
 
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
